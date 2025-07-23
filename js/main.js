@@ -15,27 +15,61 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// Form submission handling
+// Form submission handling for Formspree
 const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('form-status');
+
 if (contactForm) {
-  contactForm.addEventListener('submit', function(e) {
+  contactForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    // Get form values
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const subject = document.getElementById('subject').value;
-    const message = document.getElementById('message').value;
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
     
-    // Here you would typically send the form data to a server
-    // For this example, we'll just log it and show an alert
-    console.log({ name, email, subject, message });
-    
-    alert('Thank you for your message! I will get back to you soon.');
-    contactForm.reset();
+    try {
+      const response = await fetch(this.action, {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        // Success message
+        formStatus.style.display = 'block';
+        formStatus.innerHTML = `
+          <div class="alert success">
+            <i class="fas fa-check-circle"></i>
+            Message sent successfully! I'll get back to you soon.
+          </div>
+        `;
+        contactForm.reset();
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      // Error message
+      formStatus.style.display = 'block';
+      formStatus.innerHTML = `
+        <div class="alert error">
+          <i class="fas fa-exclamation-circle"></i>
+          Oops! There was a problem sending your message. Please try again later.
+        </div>
+      `;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+      
+      // Hide status message after 5 seconds
+      setTimeout(() => {
+        formStatus.style.display = 'none';
+      }, 5000);
+    }
   });
 }
-
 // Mobile menu toggle (can be added later)
 // const menuToggle = document.querySelector('.menu-toggle');
 // const nav = document.querySelector('nav ul');

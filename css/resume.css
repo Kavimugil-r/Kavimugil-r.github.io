@@ -22,15 +22,6 @@
   padding: 80px 0;
 }
 
-.resume-container {
-  background: white;
-  padding: 50px;
-  border-radius: 8px;
-  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
 .resume-header h1 {
   text-align: center;
   font-size: 2.5rem;
@@ -166,4 +157,29 @@
     flex-direction: column;
     gap: 10px;
   }
+  /* Inside resume.css */
+    .resume-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    }
+
+    embed, iframe {
+    border-radius: 8px;
+    margin-bottom: 20px;
+    }
+
+    .pdf-fallback {
+    margin-top: 10px;
+    color: var(--text-light);
+    }
+
+    .pdf-fallback a {
+    color: var(--primary-color);
+    font-weight: 600;
+    }
 }
